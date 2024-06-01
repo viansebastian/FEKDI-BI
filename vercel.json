@@ -8,27 +8,27 @@
     ],
     "routes": [
       {
-        "src": "/api/data/draw-petri-csv",
+        "src": "/draw-petri-csv",
         "dest": "test.py"
       },
       {
-        "src": "/api/data/draw-petri-xes",
+        "src": "/draw-petri-xes",
         "dest": "test.py"
       },
       {
-        "src": "/api/data/token-replay-csv",
+        "src": "/token-replay-csv",
         "dest": "test.py"
       },
       {
-        "src": "/api/data/token-replay-xes",
+        "src": "/token-replay-xes",
         "dest": "test.py"
       },
       {
-        "src": "/api/data/diagnostics-alignments-csv",
+        "src": "/diagnostics-alignments-csv",
         "dest": "test.py"
       },
       {
-        "src": "/api/data/diagnostics-alignments-xes",
+        "src": "/diagnostics-alignments-xes",
         "dest": "test.py"
       },
       {
