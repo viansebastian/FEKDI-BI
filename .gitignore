@@ -1,1 +1,7 @@
 .vercel
+Lib/
+Include/
+Scripts/
+__pycache__/
+.vercel/
+pyvenv.cfg
