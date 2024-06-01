@@ -1,3 +1,20 @@
 {
-    "rewrites": [{ "source": "/(.*)", "destination": "/fekdi/test" }]
+    "version": 2,
+    "builds": [
+      {
+        "src": "test.py",
+        "use": "@vercel/python"
+      }
+    ],
+    "routes": [
+      {
+        "src": "/api/data",
+        "dest": "test.py"
+      },
+      {
+        "src": "/(.*)",
+        "dest": "test.py"
+      }
+    ]
   }
+  
