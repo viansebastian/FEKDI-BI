@@ -14,6 +14,15 @@ from core_func import draw_petri_csv, draw_petri_xes, token_based_replay_csv, to
 
 app = Flask(__name__)
 
+@app.route("/")
+def home():
+    return "Hello World", 200
+
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return jsonify({"status": 404, "message": "Not Found"}), 404
+
 # API endpoint to draw Petri net from CSV
 @app.route('/draw-petri-csv', methods=['POST'])
 def draw_petri_csv_api():
@@ -175,5 +184,8 @@ def diagnostics_alignments_xes_api():
     return jsonify({'result' : a})
 
 
-if __name__ == '__main__': 
-    app.run(debug= True)
+# if __name__ == '__main__': 
+#     app.run(debug= True)
+
+if __name__ == '__main__':
+    app.run(debug=True, host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))
