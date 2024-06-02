@@ -2,11 +2,9 @@ services:
   - type: web
     name: FEKDI-BI
     env: python
-    buildCommand: pip install -r requirements.txt
-    startCommand: gunicorn test:app
-    envVars:
-      - key: PIP_NO_CACHE_DIR
-        value: true
-    apt:
-      packages:
-        - graphviz
+    buildCommand: |
+      apt-get update && apt-get install -y graphviz
+      pip install -r requirements.txt
+    startCommand: |
+      export PATH=$PATH:/usr/bin
+      gunicorn test:app

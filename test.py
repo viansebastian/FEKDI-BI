@@ -22,6 +22,15 @@ def home():
 def page_not_found(e):
     return jsonify({"status": 404, "message": "Not Found"}), 404
 
+@app.route('/check-graphviz')
+def check_graphviz():
+    import subprocess
+    try:
+        output = subprocess.check_output(['dot', '-V'], stderr=subprocess.STDOUT)
+        return output.decode('utf-8')
+    except subprocess.CalledProcessError as e:
+        return str(e)
+
 # API endpoint to draw Petri net from CSV
 @app.route('/draw-petri-csv', methods=['POST'])
 def draw_petri_csv_api():
