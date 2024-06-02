@@ -10,9 +10,11 @@ import os
 import io
 import tempfile
 from flask import Flask, request, jsonify #,send_file
+from flask_cors import CORS
 from core_func import draw_petri_csv, draw_petri_xes, token_based_replay_csv, token_based_replay_xes, diagnostics_alignments_csv, diagnostics_alignments_xes
 
 app = Flask(__name__)
+CORS(app)
 
 @app.route("/")
 def home():

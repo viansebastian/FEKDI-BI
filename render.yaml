@@ -2,9 +2,12 @@ services:
   - type: web
     name: FEKDI-BI
     env: python
-    buildCommand: |
-      apt-get update && apt-get install -y graphviz
-      pip install -r requirements.txt
-    startCommand: |
-      export PATH=$PATH:/usr/bin
-      gunicorn test:app
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn test:app
+    region: oregon
+    envVars:
+      - key: PYTHONUNBUFFERED
+        value: 'true'
+    preDeploy:
+      - apt-get update && apt-get install -y graphviz
