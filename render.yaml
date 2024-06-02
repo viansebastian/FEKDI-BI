@@ -1,13 +1,25 @@
 services:
   - type: web
     name: FEKDI-BI
-    env: python
+    env: docker
     plan: free
-    buildCommand: pip install -r requirements.txt
-    startCommand: gunicorn test:app
+    dockerfilePath: ./Dockerfile
+    numInstances: 1
     region: oregon
     envVars:
       - key: PYTHONUNBUFFERED
         value: 'true'
-    preDeploy:
-      - apt-get update && apt-get install -y graphviz
+
+# services:
+#   - type: web
+#     name: FEKDI-BI
+#     env: python
+#     plan: free
+#     buildCommand: pip install -r requirements.txt
+#     startCommand: gunicorn test:app
+#     region: oregon
+#     envVars:
+#       - key: PYTHONUNBUFFERED
+#         value: 'true'
+#     preDeploy:
+#       - apt-get update && apt-get install -y graphviz
