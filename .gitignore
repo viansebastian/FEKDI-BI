@@ -1,6 +1,4 @@
-Lib/
-Include/
-Scripts/
 __pycache__/
-.vercel/
-pyvenv.cfg
+*.py[cod]
+*.ipynb_checkpoints/
+venv/
