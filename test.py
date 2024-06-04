@@ -14,7 +14,13 @@ from flask_cors import CORS
 from core_func import draw_petri_csv, draw_petri_xes, token_based_replay_csv, token_based_replay_xes, diagnostics_alignments_csv, diagnostics_alignments_xes
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={
+    r"/*": {
+        "origins": "*",
+        "methods": ["GET", "HEAD", "POST", "OPTIONS", "PUT", "PATCH", "DELETE"],
+        "allow_headers": ["Authorization", "Content-Type"]
+    }
+})
 
 @app.route("/")
 def home():
@@ -36,6 +42,10 @@ def check_graphviz():
 # API endpoint to draw Petri net from CSV
 @app.route('/draw-petri-csv', methods=['POST'])
 def draw_petri_csv_api():
+    
+    if 'file' not in request.files or not request.files['file']:
+        return jsonify({'error': 'No file part in the request'}), 400
+    
     file = request.files['file']
     sep = request.form['sep']
     case_id = request.form['case_id']
@@ -59,7 +69,6 @@ def draw_petri_csv_api():
     return jsonify({
         'pnml': pnml_content,
         'petri_img' : img_stream.getvalue().hex()
-        # 'image_url': 'path_to_image.png'  # Replace with actual image serving URL
     })
 
 # API endpoint to draw Petri net from XES
@@ -70,10 +79,7 @@ def draw_petri_xes_api():
         return jsonify({'error': 'No file part in the request'}), 400
     
     file = request.files['file']
-    
-    if file.filename == '':
-        return jsonify({'error': 'No file selected for uploading'}), 400
-    
+
     # Save file temporarily
     temp_xes_file = tempfile.NamedTemporaryFile(delete=False)
     file.save(temp_xes_file.name)
@@ -91,12 +97,15 @@ def draw_petri_xes_api():
     return jsonify({
         'pnml': pnml_content,
         'petri_image' : img_stream.getvalue().hex()
-        # 'image_url': 'path_to_image.png'# Replace with actual image serving URL
     })
 
 # API endpoint for token-based replay from CSV
 @app.route('/token-replay-csv', methods=['POST'])
 def token_replay_csv_api():
+    
+    if 'file' not in request.files or not request.files['file']:
+        return jsonify({'error': 'No file part in the request'}), 400
+    
     file = request.files['file']
     sep = request.form['sep']
     case_id = request.form['case_id']
@@ -118,12 +127,17 @@ def token_replay_csv_api():
     
     # Remove temporary file
     os.remove(temp_csv_file.name)
+    os.remove(temp_pnml_file.name)
     
     return jsonify({'result': a})
 
 # API endpoint for token-based replay from XES
 @app.route('/token-replay-xes', methods=['POST'])
 def token_replay_xes_api():
+    
+    if 'file' not in request.files or not request.files['file']:
+        return jsonify({'error': 'No file part in the request'}), 400
+    
     file = request.files['file']
     pnml_file = request.files['pnml_file']
     
@@ -141,12 +155,17 @@ def token_replay_xes_api():
     
     # Remove temporary file
     os.remove(temp_xes_file.name)
+    os.remove(temp_pnml_file.name)
     
     return jsonify({'result': a})
 
 # API endpoint for diagnostics alignments from CSV
 @app.route('/diagnostics-alignments-csv', methods=['POST'])
 def diagnostics_alignments_csv_api():
+    
+    if 'file' not in request.files or not request.files['file']:
+        return jsonify({'error': 'No file part in the request'}), 400
+    
     file = request.files['file']
     sep = request.form['sep']
     case_id = request.form['case_id']
@@ -168,11 +187,16 @@ def diagnostics_alignments_csv_api():
     
     # Remove temporary file
     os.remove(temp_csv_file.name)
+    os.remove(temp_pnml_file.name)
     
     return jsonify({'result' : a})
 
 @app.route('/diagnostics-alignments-xes', methods=['POST'])
 def diagnostics_alignments_xes_api():
+    
+    if 'file' not in request.files or not request.files['file']:
+        return jsonify({'error': 'No file part in the request'}), 400
+    
     file = request.files['file']
     pnml_file = request.files['pnml_file']
     
@@ -190,6 +214,7 @@ def diagnostics_alignments_xes_api():
     
     # Remove temporary file
     os.remove(temp_xes_file.name)
+    os.remove(temp_pnml_file.name)
     
     return jsonify({'result' : a})
 
