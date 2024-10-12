@@ -1,6 +1,6 @@
 ## FEKDI-BI
 
-In this participation, we built a process modeling AI Engine named Tanwira. Tanwira aims to detect inefficiencies in an organizational process.
+In this Fekdi Bank Indonesia competition participation, we built a Process Modeling AI Engine named Tanwira. Tanwira aims to detect inefficiencies in an organizational process.
 
 Should you be interested in discussions regarding this topic, feel free to inquire me! 
 
