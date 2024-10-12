@@ -72,32 +72,76 @@ def draw_petri_csv_api():
     })
 
 # API endpoint to draw Petri net from XES
-@app.route('/draw-petri-xes', methods=['POST'])
-def draw_petri_xes_api():
+@app.route('/diagnostics-alignments-xes', methods=['POST'])
+def diagnostics_alignments_xes_api():
     
-    if 'file' not in request.files:
+    if 'file' not in request.files or 'pnml_file' not in request.files:
         return jsonify({'error': 'No file part in the request'}), 400
     
     file = request.files['file']
-
+    pnml_file = request.files['pnml_file']
+    
+    if file.filename == '' or pnml_file.filename == '':
+        return jsonify({'error': 'No file selected for uploading'}), 400
+    
     # Save file temporarily
     temp_xes_file = tempfile.NamedTemporaryFile(delete=False)
     file.save(temp_xes_file.name)
     temp_xes_file.close()
     
-    pnml_content, image, _, _, _ = draw_petri_xes(temp_xes_file.name)
+    # Log file content for debugging
+    with open(temp_xes_file.name, 'r') as f:
+        file_content = f.read()
+        print("XES File Content:", file_content)
     
-    # Remove temporary file
+    # Check if the file is empty
+    if not file_content:
+        return jsonify({'error': 'Uploaded file is empty or corrupted'}), 400
+    
+    temp_pnml_file = tempfile.NamedTemporaryFile(delete=False, suffix='.pnml')
+    pnml_file.save(temp_pnml_file.name)
+    temp_pnml_file.close()
+    pnml_path = temp_pnml_file.name
+    
+    try:
+        a = diagnostics_alignments_xes(temp_xes_file.name, pnml_path)
+    except Exception as e:
+        # Log the exception
+        print("Exception occurred:", e)
+        return jsonify({'error': 'An error occurred during processing', 'details': str(e)}), 500
+    
+    # Remove temporary files
     os.remove(temp_xes_file.name)
+    os.remove(temp_pnml_file.name)
     
-    img_stream = io.BytesIO()
-    image.save(img_stream, format='PNG')
-    img_stream.seek(0)
+    return jsonify({'result': a})
+
+# @app.route('/draw-petri-xes', methods=['POST'])
+# def draw_petri_xes_api():
     
-    return jsonify({
-        'pnml': pnml_content,
-        'petri_image' : img_stream.getvalue().hex()
-    })
+#     if 'file' not in request.files:
+#         return jsonify({'error': 'No file part in the request'}), 400
+    
+#     file = request.files['file']
+
+#     # Save file temporarily
+#     temp_xes_file = tempfile.NamedTemporaryFile(delete=False)
+#     file.save(temp_xes_file.name)
+#     temp_xes_file.close()
+    
+#     pnml_content, image, _, _, _ = draw_petri_xes(temp_xes_file.name)
+    
+#     # Remove temporary file
+#     os.remove(temp_xes_file.name)
+    
+#     img_stream = io.BytesIO()
+#     image.save(img_stream, format='PNG')
+#     img_stream.seek(0)
+    
+#     return jsonify({
+#         'pnml': pnml_content,
+#         'petri_image' : img_stream.getvalue().hex()
+#     })
 
 # API endpoint for token-based replay from CSV
 @app.route('/token-replay-csv', methods=['POST'])
