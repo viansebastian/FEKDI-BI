@@ -16,6 +16,6 @@ Should you be interested in discussions regarding this topic, feel free to inqui
 ![Screenshot 10](pres/Screenshot%202024-10-12%20163128.png)
 ![Screenshot 11](pres/Screenshot%202024-10-12%20163145.png)
 ![Screenshot 12](pres/Screenshot%202024-10-12%20163158.png)
-![Screenshot 13](pres/Screenshot%202024-10-12%20163215.png)
+![Screenshot 13](pres/Screenshot%202024-10-12%20163210.png)
 ![Screenshot 14](pres/Screenshot%202024-10-12%20163231.png)
 ![Screenshot 15](pres/Screenshot%202024-10-12%20163238.png)
